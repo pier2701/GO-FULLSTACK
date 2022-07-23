@@ -1,0 +1,23 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pier2701/GO-FULLSTACK.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pier2701/GO-FULLSTACK/issues"
+  },
+  "homepage": "https://github.com/pier2701/GO-FULLSTACK#readme",
+  "dependencies": {
+    "express": "^4.18.1",
+    "mongoose": "^6.4.6"
+  }
+}
