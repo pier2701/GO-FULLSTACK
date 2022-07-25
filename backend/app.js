@@ -13,6 +13,8 @@ const mongoose = require('mongoose');
 // on importe la méthode "router" créée dans le fichier "stuff.js" avec TOUTES les routes/requêtes
 const stuffRoutes = require('./routes/stuff');
 
+// on importe la méthode "router" créée pour les "users"
+const userRoutes = require('./routes/user');
 
 // connection à mongoDB à travers mongoose avec userId et mdp ( + adresse fourni lors de la création de l'userId) dans le lien
 mongoose.connect('mongodb+srv://Peter2701:DataBase2701@cluster0.pc1zmj6.mongodb.net/?retryWrites=true&w=majority',
@@ -37,8 +39,11 @@ app.use((req, res, next) => {
     next();
 });
 
-// mise en place de l'app de "stuffRouter" avec le chemin vers "api/stuff" ET le routeur mis en place
+// mise en place de l'app de "stuffRoutes" avec le chemin vers "api/stuff" ET le routeur mis en place
 app.use('/api/stuff',stuffRoutes);
+
+// mise en place de l'app de "userRoutes" avec le chemin attendu par le "frontend" "api/auth et le routeur pour les != chemins "user"
+app.use('/api/auth',userRoutes);
 
 // exporter l'application pour pouvoir l'utiliser depuis les autres fichiers
 module.exports = app;
