@@ -20,7 +20,7 @@ router.post("/", auth, multer, stuffCtrl.createThing); // ajout de "auth" AVANT 
 // ajout de "multer" avant "auth"
 
 // route de type PUT request pour modifier un article
-router.put("/:id", auth, stuffCtrl.modifyThing);
+router.put("/:id", auth, multer, stuffCtrl.modifyThing);
 
 // route de type DELETE request pour supprimer un article
 router.delete("/:id", auth, stuffCtrl.deleteThing);

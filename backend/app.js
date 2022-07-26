@@ -10,8 +10,8 @@ const app = express();
 // déclaration de constante pour importer l'application mongoose
 const mongoose = require("mongoose");
 
-//
-const path = require("path");
+// on importe le module "path" pour interagir avec les routes de fichiers "image"
+const path = require("node:path");
 
 // on importe la méthode "router" créée dans le fichier "stuff.js" avec TOUTES les routes/requêtes
 const stuffRoutes = require("./routes/stuff");
