@@ -6,8 +6,8 @@ const uniqueValidator = require("mongoose-unique-validator");
 
 // on créé le "Schema" depuis mongoose
 const userSchema = mongoose.Schema({
-  email: { type: "string", required: true, unique: true },
-  password: { type: "string", required: true },
+  email: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
 });
 
 // on applique le plug-in au "schema"

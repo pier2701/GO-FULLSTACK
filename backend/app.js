@@ -4,20 +4,22 @@
 const { application } = require("express");
 const express = require("express");
 
-// la constante déclarée permet de créer une application "express"
-const app = express();
-
 // déclaration de constante pour importer l'application mongoose
 const mongoose = require("mongoose");
 
 // on importe le module "path" pour interagir avec les routes de fichiers "image"
 const path = require("path");
 
+const bodyParser = require("body-parser");
+
 // on importe la méthode "router" créée dans le fichier "stuff.js" avec TOUTES les routes/requêtes
 const stuffRoutes = require("./routes/stuff");
 
 // on importe la méthode "router" créée pour les "users"
 const userRoutes = require("./routes/user");
+
+// la constante déclarée permet de créer une application "express"
+const app = express();
 
 // connection à mongoDB à travers mongoose avec userId et mdp ( + adresse fourni lors de la création de l'userId) dans le lien
 mongoose
@@ -49,6 +51,8 @@ app.use((req, res, next) => {
   );
   next();
 });
+
+app.use(bodyParser.json());
 
 // mise en place d'une route pour les fichiers "static" (images)
 app.use("/images", express.static(path.join(__dirname, "images")));
