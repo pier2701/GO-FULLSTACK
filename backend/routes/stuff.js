@@ -1,6 +1,9 @@
 // on importe toujours express pour récupérer ses méthodes
 const express = require("express");
 
+// on utlise la méthode "routeur" de "express"
+const router = express.Router();
+
 // on importe la méthode d'authentification
 const auth = require("../middleware/auth");
 
@@ -9,9 +12,6 @@ const multer = require("../middleware/multer-config");
 
 // importation du "stuffControllers" créé le dossier "controllers"
 const stuffCtrl = require("../controllers/stuff");
-
-// on utlise la méthode "routeur" de "express"
-const router = express.Router();
 
 // on utilisera les mêmes routes que pour les requêtes, on remplacera "app" par "router"
 

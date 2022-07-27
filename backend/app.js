@@ -1,7 +1,7 @@
 /** paramétrage du FRAMEWORK Express qui facilitera l'analyse des demandes **/
 
 // la constante qui permet d'importer le module "express"
-//const {application}= require('express');
+const { application } = require("express");
 const express = require("express");
 
 // la constante déclarée permet de créer une application "express"
@@ -11,7 +11,7 @@ const app = express();
 const mongoose = require("mongoose");
 
 // on importe le module "path" pour interagir avec les routes de fichiers "image"
-const path = require("node:path");
+const path = require("path");
 
 // on importe la méthode "router" créée dans le fichier "stuff.js" avec TOUTES les routes/requêtes
 const stuffRoutes = require("./routes/stuff");
@@ -50,14 +50,14 @@ app.use((req, res, next) => {
   next();
 });
 
+// mise en place d'une route pour les fichiers "static" (images)
+app.use("/images", express.static(path.join(__dirname, "images")));
+
 // mise en place de l'app de "stuffRoutes" avec le chemin vers "api/stuff" ET le routeur mis en place
 app.use("/api/stuff", stuffRoutes);
 
 // mise en place de l'app de "userRoutes" avec le chemin attendu par le "frontend" "api/auth et le routeur pour les != chemins "user"
 app.use("/api/auth", userRoutes);
-
-// mise en place d'une route pour les fichiers "static" (images)
-app.use("/images", express.static(path.join(__dirname, "images")));
 
 // exporter l'application pour pouvoir l'utiliser depuis les autres fichiers
 module.exports = app;

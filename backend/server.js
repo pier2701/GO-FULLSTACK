@@ -1,5 +1,9 @@
+const { cp } = require("fs");
 // on importe le module "http" de node
 const http = require("http");
+
+const { type } = require("os");
+const { parentPort } = require("worker_threads");
 
 // on importe le module créé "app" qui est "express" depuis le dossier backend (./app)
 const app = require("./app");

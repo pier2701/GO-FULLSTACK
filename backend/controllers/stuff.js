@@ -1,11 +1,10 @@
 // importation du "schema" créé dans mongoose importé du dossier "models"
 // car il est réutilisé ici
-const Thing = require("../models/thing").default.default;
+const Thing = require("../models/thing");
 
+const { json } = require("express");
 // on déclare la méthode "fse"
 const fse = require("fs-extra");
-const { request } = require("../app");
-const thing = require("../models/thing");
 
 // on exporte les méthodes créées au sein de chaque "router" dans une nouvelle fonction pour chaque méthode "router"
 
@@ -32,9 +31,9 @@ exports.createThing = (req, res, next) => {
   // on enregistre l'objet dans la base avec la méthode "save()"
   thing
     .save()
-    .then(() =>
-      res.status(201).json({ message: "Objet enregistré comme thing !!!" })
-    )
+    .then(() => {
+      res.status(201).json({ message: "Objet enregistré comme thing !!!" });
+    })
     .catch((error) => res.status(400).json({ error }));
 };
 
@@ -75,11 +74,30 @@ exports.modifyThing = (req, res, next) => {
 
 // on récupère la logique pour effacer un article
 exports.deleteThing = (req, res, next) => {
-  // méthode deleteOne pour supprimer avec l'id qui est pointée
-  Thing.deleteOne({ _id: req.params.id })
-    .then(() => res.status(200).json({ message: "Objet supprimé !!!" }))
-    // error 404 pour dire que l'objet n'est pas trouvé
-    .catch((error) => res.status(400).json({ error }));
+  // on compare le "create-user" et le "delete-user" qui fait la requête
+  Thing.findOne({ _id: req.params.id })
+    .then((thing) => {
+      if (thing.userId != req.auth.userId) {
+        // on compare le 'userId' avec celui du token
+        // si la comparaison n'es pas bonne => error 401
+        res.status(401).json({ message: "Not authorized" });
+      } else {
+        const filename = thing.imageUrl.split("/images/")[1]; // on récupère le nom du fichier
+        fse.unlink(`images/${filename}`, () => {
+          // "unlink" permet de supprimer le fichier dans le système de fichier
+          // méthode deleteOne pour supprimer avec l'id qui est pointée
+          Thing.deleteOne({ _id: req.params.id }) // puis on delete l'objet dans la base de données
+            .then(() => {
+              res.status(200).json({ message: "Objet supprimé !!!" });
+            })
+            // error 401 pour dire que l'objet n'est pas trouvé
+            .catch((error) => res.status(401).json({ error }));
+        });
+      }
+    })
+    .catch((error) => {
+      res.status(500).json({ error });
+    });
 };
 
 // on récupère la logique pour afficher 1 seul article
@@ -87,8 +105,8 @@ exports.getOneThing = (req, res, next) => {
   // route pour accèder à la page de 1 seul produit
   Thing.findOne({ _id: req.params.id })
     .then((thing) => res.status(200).json(thing))
-    // error 404 pour dire que l'objet n'est pas trouvé
-    .catch((error) => res.status(404).json({ error }));
+    // error 401 pour dire que l'objet n'est pas trouvé
+    .catch((error) => res.status(401).json({ error }));
 };
 
 // on récupère la méthode pour afficher touts les articles
